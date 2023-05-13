@@ -3,10 +3,13 @@
 
 # Usage
 
+## 安装 zsh-autosuggestions、zsh-syntax-highlighting
 ```
-curl -fsSL https://raw.githubusercontent.com/wangwanjie/quick_shell/main/quick_oh_my_zsh.sh | sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/wangwanjie/quick_shell/main/quick_oh_my_zsh.sh)"
 ```
 
+## 合并 .bash_history 到 .zsh_history
+
 ```
-curl -fsSL https://raw.githubusercontent.com/wangwanjie/quick_shell/main/merge_bash_history_into_zsh_history.sh | sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/wangwanjie/quick_shell/main/merge_bash_history_into_zsh_history.sh)"
 ```

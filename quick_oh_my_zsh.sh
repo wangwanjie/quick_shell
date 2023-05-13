@@ -27,15 +27,15 @@ chsh -s $(which zsh)
 # 根据操作系统类型，安装 oh-my-zsh
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # Mac OSX
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
     # Linux
     if [[ -f /etc/redhat-release ]]; then
         # CentOS
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+       sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     elif [[ -f /etc/lsb-release ]]; then
         # Ubuntu
-        sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     fi
 fi
 
@@ -43,17 +43,17 @@ fi
 # 根据操作系统类型安装 zsh-autosuggestions ，并添加到 .zshrc
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # Mac OSX
-    brew install zsh-autosuggestions
-    echo "source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    echo "source ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
     # Linux
     if [[ -f /etc/redhat-release ]]; then
         # CentOS
-        git clone   https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/plugins/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+        git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
         echo "source ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
     elif [[ -f /etc/lsb-release ]]; then
         # Ubuntu
-        git clone   https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/plugins/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+        git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
         echo "source ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
     fi
 fi
@@ -61,17 +61,17 @@ fi
 # 根据操作系统类型安装 zsh-syntax-highlighting ，并添加到 .zshrc
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # Mac OSX
-    brew install zsh-syntax-highlighting
-    echo "source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    echo "source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
     # Linux
     if [[ -f /etc/redhat-release ]]; then
         # CentOS
-        git clone https://raw.githubusercontent.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
         echo "source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
     elif [[ -f /etc/lsb-release ]]; then
         # Ubuntu
-        git clone https://raw.githubusercontent.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
         echo "source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
     fi
 fi
@@ -98,4 +98,9 @@ fi
 if [ -x "$(command -v autojump)" ]; then
     echo 'autojump is installed.' >&2
     echo "[[ -s ~/.autojump/etc/profile.d/autojump.sh ]] && source ~/.autojump/etc/profile.d/autojump.sh" >> ~/.zshrc
+fi
+
+# 判断 .zshrc 是否存在，如果存在，则 source 一下
+if [ -f ~/.zshrc ]; then
+    source ~/.zshrc
 fi
