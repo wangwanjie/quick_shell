@@ -39,6 +39,43 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/wangwanjie/quick_shell/mai
 
 ---
 
+## daily
+
+### fw-setup.sh
+
+Debian 服务器防火墙一键修复、初始化与恢复脚本。会自动备份当前 `iptables` 规则，按指定端口放行 SSH / TCP / UDP，并开启 NAT 转发；支持从历史备份恢复。
+
+**依赖：** Debian；root 权限；`iptables`、`iptables-persistent`、`netfilter-persistent`
+
+| 选项 | 说明 |
+|---|---|
+| `-s, --ssh-port <port>` | SSH 端口，默认 `22` |
+| `-t, --tcp-ports <list>` | 额外放行的 TCP 端口，逗号分隔，如 `80,443,8080` |
+| `-u, --udp-ports <list>` | 额外放行的 UDP 端口，逗号分隔，如 `51820` |
+| `-n, --nat-net <cidr>` | NAT 转发网段，默认 `192.168.90.0/24` |
+| `-y, --all-yes` | 跳过确认提示，直接执行 |
+| `--restore` | 从 `/root/iptables_backups` 中选择备份并恢复 |
+| `-h, --help` | 显示帮助 |
+
+**本地调用：**
+
+```bash
+sudo bash ./daily/fw-setup.sh -s 2222 -t 80,443,8080 -u 51820 -n 10.0.0.0/24
+sudo bash ./daily/fw-setup.sh --restore
+```
+
+**远端调用：**
+
+```bash
+sudo bash <(curl -fsSL https://raw.githubusercontent.com/wangwanjie/quick_shell/main/daily/fw-setup.sh) \
+  -s 2222 -t 80,443,8080 -u 51820 -n 10.0.0.0/24
+
+sudo bash <(curl -fsSL https://raw.githubusercontent.com/wangwanjie/quick_shell/main/daily/fw-setup.sh) \
+  --restore
+```
+
+---
+
 ## develop/app
 
 ### appicon-magick.sh
@@ -333,4 +370,41 @@ curl -fsSL https://raw.githubusercontent.com/wangwanjie/quick_shell/main/develop
   --xcframework_path ./upnpx.xcframework \
   --scan_dir ./MyProject \
   --action_type fix
+```
+
+---
+
+### quick_clone_proj.py
+
+快速复制一个现有工程到新目录，并批量替换项目名、类名前缀等文本，同时重命名匹配的文件和目录。默认会跳过 `Pods`、`xcworkspace`、`build/outputs`、`iOS/build`、`.idea` 等目录。
+
+| 选项 | 说明 |
+|---|---|
+| `--dir` | 源工程目录（必填） |
+| `--destDir` | 新工程所在的父目录（必填） |
+| `--destDirName` | 新工程目录名（必填） |
+| `--oldWords` | 要替换的旧词列表，逗号分隔（必填） |
+| `--newWords` | 对应的新词列表，逗号分隔，数量需与 `--oldWords` 一致（必填） |
+
+**本地调用：**
+
+```bash
+python3 ./develop/python/quick_clone_proj.py \
+  --dir ./OldProject \
+  --destDir ~/Desktop \
+  --destDirName NewProject \
+  --oldWords OldProject,OLD \
+  --newWords NewProject,NEW
+```
+
+**远端调用：**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/wangwanjie/quick_shell/main/develop/python/quick_clone_proj.py \
+  | python3 - \
+  --dir ./OldProject \
+  --destDir ~/Desktop \
+  --destDirName NewProject \
+  --oldWords OldProject,OLD \
+  --newWords NewProject,NEW
 ```
