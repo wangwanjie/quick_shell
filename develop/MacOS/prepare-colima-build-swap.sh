@@ -16,8 +16,16 @@ die() {
   exit 1
 }
 
+host_os() {
+  uname -s
+}
+
 host_arch() {
   uname -m
+}
+
+require_apple_silicon_macos() {
+  [[ "$(host_os)" == "Darwin" && "$(host_arch)" == "arm64" ]] || die "prepare-colima-build-swap requires Apple Silicon macOS"
 }
 
 resolve_colima_bin() {
@@ -140,6 +148,7 @@ case "$ACTION" in
     ;;
 esac
 
+require_apple_silicon_macos
 COLIMA_BIN_RESOLVED="$(resolve_colima_bin)"
 require_colima "$COLIMA_BIN_RESOLVED"
 
