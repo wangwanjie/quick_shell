@@ -76,6 +76,50 @@ sudo bash <(curl -fsSL https://raw.githubusercontent.com/wangwanjie/quick_shell/
 
 ---
 
+## develop/MacOS
+
+### prepare-colima-build-swap.sh
+
+为 Apple Silicon 上的低内存 Colima VM 临时启用 swap，避免多架构 Docker 镜像发布时 `linux/amd64` 模拟构建因内存不足卡住或失败。默认在 Colima VM 内创建 `/swapfile-colima-build`，`cleanup` 会同时兼容清理旧路径 `/swapfile-open-design-build`。
+
+**依赖：** macOS；Colima；Docker/Buildx 发布前已启动 Colima
+
+| 命令 | 说明 |
+|---|---|
+| `ensure` | 内存低于 4GiB 且无 swap 时创建并启用 swap，默认命令 |
+| `status` | 查看 Colima VM 内存与 swap 状态 |
+| `cleanup` | 关闭并删除脚本创建的 swap 文件 |
+
+| 环境变量 | 说明 |
+|---|---|
+| `COLIMA_BUILD_SWAP_SIZE` | swap 大小，默认 `4G` |
+| `COLIMA_BUILD_SWAPFILE` | swap 文件路径，默认 `/swapfile-colima-build` |
+| `COLIMA_BUILD_SWAP_MEMORY_THRESHOLD_KIB` | 低内存阈值，默认 `4194304`（4GiB） |
+| `COLIMA_BIN` | 指定 Colima 可执行文件路径，默认优先 `/opt/homebrew/bin/colima` |
+
+**本地调用：**
+
+```bash
+bash ./develop/MacOS/prepare-colima-build-swap.sh
+# 执行你的 docker buildx / 镜像发布命令
+bash ./develop/MacOS/prepare-colima-build-swap.sh cleanup
+```
+
+**安装为全局命令：**
+
+```bash
+sudo install -m 755 ./develop/MacOS/prepare-colima-build-swap.sh /usr/local/bin/prepare-colima-build-swap.sh
+prepare-colima-build-swap.sh
+```
+
+**远端调用：**
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/wangwanjie/quick_shell/main/develop/MacOS/prepare-colima-build-swap.sh)
+```
+
+---
+
 ## develop/app
 
 ### appicon-magick.sh
